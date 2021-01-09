@@ -5,10 +5,10 @@ const RoomList = ({ rooms }) => {
     <div>
       {rooms.map((room) => (
         <div key={room.id}>
-          <div class="col s12 m12">
-            <div class="card horizontal">
-              <div class="card-stacked">
-                <div class="card-content">
+          <div className="col s12 m12">
+            <div className="card horizontal">
+              <div className="card-stacked">
+                <div className="card-content">
                   <p>{room.name}</p>
                 </div>
               </div>
