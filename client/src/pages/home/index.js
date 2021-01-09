@@ -1,13 +1,24 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
+import io from 'socket.io-client';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../../UserContext';
 import Navbar from '../../components/Navbar';
 import RoomList from '../../components/RoomList';
+let socket;
 
 const Home = () => {
   const { user, setUser } = useContext(UserContext);
+  const BASE_URL = 'localhost:7000';
+  useEffect(() => {
+    socket = io(BASE_URL);
+    return () => {
+      socket.emit('disconnet');
+      socket.off();
+    };
+  }, [BASE_URL]);
 
   const data = JSON.stringify(user);
+  const [room, setRoom] = useState('');
   const rooms = [
     {
       name: 'Room1',
@@ -40,24 +51,35 @@ const Home = () => {
     setUser(john);
   };
 
+  const hendleSubmit = (e) => {
+    e.preventDefault();
+    socket.emit('create-room', room);
+    console.log(room);
+    setRoom('');
+  };
+
   return (
     <div>
       <Navbar />
-      <div class="container">
-        <div class="row">
-          <div class="col s12 m7">
-            <div class="card blue-grey darken-1">
-              <div class="card-content white-text">
-                <span class="card-title">Welcome, {user ? user.name : ''}</span>
-                <div class="row">
-                  <form class="col s12">
-                    <div class="row">
-                      <div class="input-field col s12">
+      <div className="container">
+        <div className="row">
+          <div className="col s12 m7">
+            <div className="card blue-grey darken-1">
+              <div className="card-content white-text">
+                <span className="card-title">
+                  Welcome, {user ? user.name : ''}
+                </span>
+                <div className="row">
+                  <form className="col s12" onSubmit={hendleSubmit}>
+                    <div className="row">
+                      <div className="input-field col s12">
                         <input
                           placeholder="Enter a rooom name"
                           id="rooms"
                           type="text"
-                          class="validate"
+                          value={room}
+                          onChange={(e) => setRoom(e.target.value)}
+                          className="validate"
                         />
                         <label for="rooms">Rooms</label>
                       </div>
@@ -65,7 +87,7 @@ const Home = () => {
                   </form>
                 </div>
               </div>
-              <div class="card-action">
+              <div className="card-action">
                 <Link to="/" onClick={setAsJohn}>
                   SET AS JHON
                 </Link>
@@ -75,7 +97,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div class="col s12 m5 offset-1">
+          <div className="col s12 m5 offset-1">
             <RoomList rooms={rooms} />
           </div>
         </div>
