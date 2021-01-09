@@ -22,11 +22,11 @@ const Home = () => {
   const rooms = [
     {
       name: 'Room1',
-      id: '123',
+      _id: '123',
     },
     {
       name: 'Room2',
-      id: '1234',
+      _id: '1234',
     },
   ];
 
