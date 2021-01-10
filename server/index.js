@@ -6,11 +6,15 @@ const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const { addUser, getUser, removeUser } = require('./helper');
 const Room = require('./models/RoomModel');
+const Message = require('./models/MessageModel');
 dotenv.config({ path: '.env' });
 
 io.on('connection', (socket) => {
+  Room.find().then((result) => {
+    socket.emit('output-rooms', result);
+  });
+
   socket.on('create-room', (name) => {
-    console.log(`The room recived is ${name}`);
     const room = new Room({ name });
     room.save().then((result) => {
       io.emit('room-created', result);
@@ -36,16 +40,18 @@ io.on('connection', (socket) => {
 
   socket.on('sendMessage', (message, room_id, callback) => {
     const user = getUser(socket.id);
-    console.log(socket.id);
+
     const msgToStore = {
       name: user.name,
       user_id: user.user_id,
       room_id,
       text: message,
     };
-    console.log(msgToStore);
-    io.to(room_id).emit('message', msgToStore);
-    callback();
+    const msg = new Message(msgToStore);
+    msg.save().then((result) => {
+      io.to(room_id).emit('message', result);
+      callback();
+    });
   });
 
   socket.on('disconnect', () => {
