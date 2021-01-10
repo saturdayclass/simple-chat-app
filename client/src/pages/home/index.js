@@ -81,7 +81,7 @@ const Home = () => {
                           onChange={(e) => setRoom(e.target.value)}
                           className="validate"
                         />
-                        <label for="rooms">Rooms</label>
+                        <label htmlFor="rooms">Rooms</label>
                       </div>
                     </div>
                   </form>
