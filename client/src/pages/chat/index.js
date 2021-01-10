@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { UserContext } from '../../UserContext';
 import Navbar from '../../components/Navbar';
 import io from 'socket.io-client';
+import Message from '../../components/Message';
 let socket;
 
 const Chat = () => {
@@ -26,7 +27,15 @@ const Chat = () => {
   }, []);
 
   useEffect(() => {
+    socket.emit('get-messages-history', roomId);
+    socket.on('output-messages', (messages) => {
+      setMessages(messages);
+    });
+  }, []);
+
+  useEffect(() => {
     socket.on('message', (message) => {
+      console.log(message);
       setMessages([...messages, message]);
     });
   }, [messages]);
@@ -44,9 +53,7 @@ const Chat = () => {
   return (
     <div>
       <Navbar />
-      {(roomId, roomName)}
-      <h1>Chat, {data}</h1>
-      <pre>{JSON.stringify(messages, null, '\t')}</pre>
+      <Message data={messages} userId={data.id} />
       <form onSubmit={sendMessage}>
         <input
           type="text"

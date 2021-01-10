@@ -11,7 +11,6 @@ const RoomList = ({ rooms, isLoading }) => {
               {rooms.map((room) => (
                 <Link to={`/chat/${room._id}/${room.name}`} key={room._id}>
                   <div>
-                    {console.log(room)}
                     <div className="col s12 m12">
                       <div className="card horizontal">
                         <div className="card-stacked">

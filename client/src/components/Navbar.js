@@ -10,11 +10,11 @@ const Navbar = () => {
             <Link to="/" className="brand-logo right">
               ChatApp
             </Link>
-            <Link to="/" data-target="mobile-demo" className="sidenav-trigger">
+            {/* <Link to="/" data-target="mobile-demo" className="sidenav-trigger">
               <i className="material-icons">menu</i>
-            </Link>
+            </Link> */}
 
-            <ul id="nav-mobile" className="left hide-on-med-and-down">
+            {/* <ul id="nav-mobile" className="left hide-on-med-and-down">
               <li>
                 <Link to="/">Login</Link>
               </li>
@@ -24,12 +24,12 @@ const Navbar = () => {
               <li>
                 <Link to="/">Chat</Link>
               </li>
-            </ul>
+            </ul> */}
           </div>
         </div>
       </nav>
 
-      <ul className="sidenav" id="mobile-demo">
+      {/* <ul className="sidenav" id="mobile-demo">
         <li>
           <Link to="/">Login</Link>
         </li>
@@ -39,7 +39,7 @@ const Navbar = () => {
         <li>
           <Link to="/">Chat</Link>
         </li>
-      </ul>
+      </ul> */}
     </>
   );
 };
