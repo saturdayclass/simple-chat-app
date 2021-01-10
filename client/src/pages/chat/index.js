@@ -52,9 +52,7 @@ const Chat = () => {
           type="text"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          onKeyPress={(e) =>
-            e.key === 'Enter' ? sendMessage(e.target.value) : null
-          }
+          onKeyPress={(e) => (e.key === 'Enter' ? sendMessage(e) : null)}
         />
         <button>Send Message</button>
       </form>

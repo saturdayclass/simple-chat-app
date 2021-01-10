@@ -7,28 +7,30 @@ import RoomList from '../../components/RoomList';
 let socket;
 
 const Home = () => {
-  const { user, setUser } = useContext(UserContext);
   const BASE_URL = 'localhost:7000';
+  const { user, setUser } = useContext(UserContext);
+  const data = JSON.stringify(user);
+  const [room, setRoom] = useState('');
+  const [rooms, setRooms] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     socket = io(BASE_URL);
+
+    socket.on('room-created', (room) => {
+      setRooms([...rooms, room]);
+    });
+
+    socket.on('output-rooms', (rooms) => {
+      setRooms(rooms);
+      setIsLoading(false);
+    });
+
     return () => {
       socket.emit('disconnet');
       socket.off();
     };
-  }, [BASE_URL]);
-
-  const data = JSON.stringify(user);
-  const [room, setRoom] = useState('');
-  const rooms = [
-    {
-      name: 'Room1',
-      _id: '123',
-    },
-    {
-      name: 'Room2',
-      _id: '1234',
-    },
-  ];
+  }, [BASE_URL, rooms]);
 
   const setAsKepo = () => {
     const kepo = {
@@ -98,7 +100,7 @@ const Home = () => {
             </div>
           </div>
           <div className="col s12 m5 offset-1">
-            <RoomList rooms={rooms} />
+            <RoomList rooms={rooms} isLoading={isLoading} />
           </div>
         </div>
         <h1>Home, {data}</h1>
