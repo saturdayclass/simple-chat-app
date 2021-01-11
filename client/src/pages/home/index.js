@@ -7,7 +7,7 @@ import RoomList from '../../components/RoomList';
 let socket;
 
 const Home = () => {
-  const BASE_URL = 'localhost:7000';
+  const BASE_URL = 'http://gabut-chat-app.herokuapp.com';
   const { user, setUser } = useContext(UserContext);
   const data = JSON.stringify(user);
   const [room, setRoom] = useState('');
