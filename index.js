@@ -10,15 +10,20 @@ const Message = require('./models/MessageModel');
 dotenv.config({ path: '.env' });
 
 io.on('connection', (socket) => {
-  Room.find().then((result) => {
-    socket.emit('output-rooms', result);
-  });
+  Room.find()
+    .then((result) => {
+      socket.emit('output-rooms', result);
+    })
+    .catch((err) => console.log(err));
 
   socket.on('create-room', (name) => {
     const room = new Room({ name });
-    room.save().then((result) => {
-      io.emit('room-created', result);
-    });
+    room
+      .save()
+      .then((result) => {
+        io.emit('room-created', result);
+      })
+      .catch((err) => console.log(err));
   });
 
   socket.on('join', ({ name, room_id, user_id }) => {
@@ -48,16 +53,21 @@ io.on('connection', (socket) => {
       text: message,
     };
     const msg = new Message(msgToStore);
-    msg.save().then((result) => {
-      io.to(room_id).emit('message', result);
-      callback();
-    });
+    msg
+      .save()
+      .then((result) => {
+        io.to(room_id).emit('message', result);
+        callback();
+      })
+      .catch((err) => console.log(err));
   });
 
   socket.on('get-messages-history', (room_id) => {
-    Message.find({ room_id }).then((result) => {
-      socket.emit('output-messages', result);
-    });
+    Message.find({ room_id })
+      .then((result) => {
+        socket.emit('output-messages', result);
+      })
+      .catch((err) => console.log(err));
   });
 
   socket.on('disconnect', () => {
