@@ -21,16 +21,19 @@ const Home = () => {
       setRooms([...rooms, room]);
     });
 
-    socket.on('output-rooms', (rooms) => {
-      setRooms(rooms);
-      setIsLoading(false);
-    });
-
     return () => {
       socket.emit('disconnet');
       socket.off();
     };
-  }, [BASE_URL, rooms]);
+    // eslint-disable-next-line
+  }, [BASE_URL]);
+
+  useEffect(() => {
+    socket.on('output-rooms', (rooms) => {
+      setRooms(rooms);
+      setIsLoading(false);
+    });
+  }, [rooms]);
 
   const setAsKepo = () => {
     const kepo = {
@@ -103,12 +106,12 @@ const Home = () => {
             <RoomList rooms={rooms} isLoading={isLoading} />
           </div>
         </div>
-        <h1>Home, {data}</h1>
+        {/* <h1>Home, {data}</h1>
         <button onClick={setAsKepo}>Login as Kepo</button>
         <button onClick={setAsJohn}>Login as John</button>
         <Link to="/chat">
           <button>Go to chat</button>
-        </Link>
+        </Link> */}
       </div>
     </div>
   );
