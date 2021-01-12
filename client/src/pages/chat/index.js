@@ -7,7 +7,7 @@ import Message from '../../components/Message';
 let socket;
 
 const Chat = () => {
-  const BASE_URL = 'localhost:7000';
+  const BASE_URL = 'http://gabut-chat-app.herokuapp.com';
   const { roomId, roomName } = useParams();
   // eslint-disable-next-line
   const { user, setUser } = useContext(UserContext);
