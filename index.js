@@ -46,20 +46,22 @@ io.on('connection', (socket) => {
   socket.on('sendMessage', (message, room_id, callback) => {
     const user = getUser(socket.id);
 
-    const msgToStore = {
-      name: user.name,
-      user_id: user.user_id,
-      room_id,
-      text: message,
-    };
-    const msg = new Message(msgToStore);
-    msg
-      .save()
-      .then((result) => {
-        io.to(room_id).emit('message', result);
-        callback();
-      })
-      .catch((err) => console.log(err));
+    if (user) {
+      const msgToStore = {
+        name: user.name,
+        user_id: user.user_id,
+        room_id,
+        text: message,
+      };
+      const msg = new Message(msgToStore);
+      msg
+        .save()
+        .then((result) => {
+          io.to(room_id).emit('message', result);
+          callback();
+        })
+        .catch((err) => console.log(err));
+    }
   });
 
   socket.on('get-messages-history', (room_id) => {
