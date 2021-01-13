@@ -9,25 +9,25 @@ const Message = ({ data, userId }) => {
           isCurrentUser = true;
         }
         return (
-          <>
+          <div key={i}>
             {isCurrentUser ? (
-              <div key={i} className="row right-align">
-                <div class="col s12 m8 16 right">
+              <div className="row right-align">
+                <div className="col s12 m8 16 right">
                   <p className="sendByMe">
                     {message.name} :{message.text}
                   </p>
                 </div>
               </div>
             ) : (
-              <div key={i} className="row left-align">
-                <div class="col s12 m8 16 right">
+              <div className="row left-align">
+                <div className="col s12 m8 16 right">
                   <p className="opponent">
                     {message.name} :{message.text}
                   </p>
                 </div>
               </div>
             )}
-          </>
+          </div>
         );
       })}
     </>

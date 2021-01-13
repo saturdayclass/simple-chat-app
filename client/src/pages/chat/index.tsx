@@ -4,18 +4,25 @@ import { UserContext } from '../../UserContext';
 import Navbar from '../../components/Navbar';
 import io from 'socket.io-client';
 import Message from '../../components/Message';
-let socket;
+let socket: any;
+
+interface IMessage {
+  name: String;
+  user_id: String;
+  text: String;
+  room_id: String;
+}
 
 const Chat = () => {
-  const BASE_URL = 'http://gabut-chat-app.herokuapp.com';
-  const { roomId, roomName } = useParams();
   // eslint-disable-next-line
-  const { user, setUser } = useContext(UserContext);
-  const [message, setMessage] = useState();
-  const [messages, setMessages] = useState([]);
+  const { roomId, roomName } = useParams<any>();
+  // eslint-disable-next-line
+  const { user, setUser } = useContext<null | any | string>(UserContext);
+  const [message, setMessage] = useState<any>();
+  const [messages, setMessages] = useState<IMessage[]>([]);
 
   useEffect(() => {
-    socket = io(BASE_URL);
+    socket = io(`${process.env.REACT_APP_SOCKET_URL}`);
     if (user !== null) {
       socket.emit('join', {
         name: user.name,
@@ -28,19 +35,18 @@ const Chat = () => {
 
   useEffect(() => {
     socket.emit('get-messages-history', roomId);
-    socket.on('output-messages', (messages) => {
+    socket.on('output-messages', (messages: any) => {
       setMessages(messages);
     });
   }, []);
 
   useEffect(() => {
-    socket.on('message', (message) => {
-      console.log(message);
+    socket.on('message', (message: any) => {
       setMessages([...messages, message]);
     });
   }, [messages]);
 
-  const sendMessage = (e) => {
+  const sendMessage = (e: any) => {
     e.preventDefault();
     if (message) {
       socket.emit('sendMessage', message, roomId, () => {
@@ -49,7 +55,8 @@ const Chat = () => {
     }
   };
 
-  const data = JSON.stringify(user);
+  const data: any = JSON.stringify(user);
+  console.log(data);
   return (
     <div>
       <Navbar />
