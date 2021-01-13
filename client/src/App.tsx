@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import * as dotenv from 'dotenv';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { UserContext } from './UserContext';
 import './App.css';
 import Chat from './pages/chat';
 import Home from './pages/home';
-function App() {
+dotenv.config();
+
+const App: React.FC = () => {
   const [user, setUser] = useState(null);
   return (
     <Router>
@@ -18,6 +21,6 @@ function App() {
       </div>
     </Router>
   );
-}
+};
 
 export default App;

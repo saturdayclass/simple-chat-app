@@ -4,20 +4,23 @@ import { Link } from 'react-router-dom';
 import { UserContext } from '../../UserContext';
 import Navbar from '../../components/Navbar';
 import RoomList from '../../components/RoomList';
-let socket;
+let socket: any;
+
+interface Rooms {
+  _id: String;
+  name: String;
+}
 
 const Home = () => {
-  const BASE_URL = 'http://gabut-chat-app.herokuapp.com';
   const { user, setUser } = useContext(UserContext);
-  const data = JSON.stringify(user);
-  const [room, setRoom] = useState('');
-  const [rooms, setRooms] = useState([]);
+  const [room, setRoom] = useState<any>('');
+  const [rooms, setRooms] = useState<Rooms[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    socket = io(BASE_URL);
+    socket = io(`${process.env.REACT_APP_SOCKET_URL}`);
 
-    socket.on('room-created', (room) => {
+    socket.on('room-created', (room: any) => {
       setRooms([...rooms, room]);
     });
 
@@ -25,11 +28,12 @@ const Home = () => {
       socket.emit('disconnet');
       socket.off();
     };
+
     // eslint-disable-next-line
-  }, [BASE_URL]);
+  }, [process.env.REACT_APP_SOCKET_URL]);
 
   useEffect(() => {
-    socket.on('output-rooms', (rooms) => {
+    socket.on('output-rooms', (rooms: any) => {
       setRooms(rooms);
       setIsLoading(false);
     });
@@ -56,7 +60,7 @@ const Home = () => {
     setUser(john);
   };
 
-  const hendleSubmit = (e) => {
+  const hendleSubmit = (e: any) => {
     e.preventDefault();
     socket.emit('create-room', room);
     console.log(room);
