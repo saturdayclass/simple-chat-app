@@ -13,7 +13,7 @@ interface Rooms {
 
 const Home = () => {
   const { user, setUser } = useContext(UserContext);
-  const [room, setRoom] = useState<any>('');
+  const [room, setRoom] = useState('');
   const [rooms, setRooms] = useState<Rooms[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -60,7 +60,7 @@ const Home = () => {
     setUser(john);
   };
 
-  const hendleSubmit = (e: any) => {
+  const hendleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     socket.emit('create-room', room);
     console.log(room);
